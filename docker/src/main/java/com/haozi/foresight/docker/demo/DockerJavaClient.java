@@ -1,5 +1,7 @@
 package com.haozi.foresight.docker.demo;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.DockerCmdExecFactory;
@@ -11,6 +13,7 @@ import com.github.dockerjava.core.command.ExecStartResultCallback;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -21,6 +24,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class DockerJavaClient {
+    static {
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        ch.qos.logback.classic.Logger logger = loggerContext.getLogger("org.apache.http");
+        logger.setLevel(Level.toLevel("info"));
+    }
     /**
      * 计数器，用于给容器名取后缀
      */
@@ -58,6 +66,7 @@ public class DockerJavaClient {
      * @return
      */
     private String createContainer(DockerClient dockerClient, CodeLang langType){
+
         // 创建容器请求
         CreateContainerResponse containerResponse = dockerClient.createContainerCmd(langType.getImageName())
                 .withName(langType.getContainerNamePrefix()+counter)
@@ -137,8 +146,15 @@ public class DockerJavaClient {
         String containerId = createContainer(dockerClient, langType);
         log.info("创建容器结束");
         log.info("开始运行容器");
+
+        // 更新限制内存大小（MemorySwap要大于Memory，但设置MemorySwap后会报memory.memsw.limit_in_bytes: device or resource busy，
+        // 故暂时设置MemorySwap为-1即不限制其大小）
+        dockerClient.updateContainerCmd(containerId).withMemory(1024L*1024L*1024L).withMemorySwap(-1L).exec();
+
         // 运行容器
         dockerClient.startContainerCmd(containerId).exec();
+
+
 
         try {
             log.info("开始写文件");
