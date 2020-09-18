@@ -66,4 +66,7 @@ echo "生成文件完成"
 # 4、拷贝ca.pem、 cert.pem、 key.pem作为密钥 拷贝到要访问远程访问docker到机器上
 ## 如idea 远程访问：https://img-blog.csdnimg.cn/20200328194902869.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0Fzc2Fzc2luX0VaSTA=,size_16,color_FFFFFF,t_70
 
-##refer: https://blog.csdn.net/Assassin_EZI0/article/details/105167118
+
+####other####
+## refer: https://blog.csdn.net/Assassin_EZI0/article/details/105167118
+## cat cert: openssl x509 -in cert.pem -text -noout
