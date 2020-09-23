@@ -10,8 +10,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemoService {
 
-    @SentinelResource(value = "sayHello")
-    public Object sayHello(){
-        return "sentinal";
+    @SentinelResource(value = "sayHello",
+            fallback = "sayHelloFallback",exceptionsToIgnore = {IllegalArgumentException.class})
+    public Object sayHello(Integer v){
+        if (v < 0){
+            throw new IllegalArgumentException("can not less 0");
+        }
+        if( v%2 == 0){
+            throw new RuntimeException("round error");
+        }
+        return "sentinal: v=" + v;
     }
+
+    public Object sayHelloFallback(Integer v){
+        return "sentinal fallback: v=" + v;
+    }
+
+    @SentinelResource(value = "hotParam")
+    public Object hotParam(Integer v){
+        return v;
+    }
+
 }

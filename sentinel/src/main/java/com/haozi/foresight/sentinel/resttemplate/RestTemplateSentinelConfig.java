@@ -1,6 +1,7 @@
 package com.haozi.foresight.sentinel.resttemplate;
 
 import com.alibaba.cloud.sentinel.annotation.SentinelRestTemplate;
+import com.haozi.foresight.sentinel.utils.BlockHandlerUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -12,13 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class RestTemplateSentinelConfig {
     @Bean
-    @SentinelRestTemplate(blockHandler = "handleException", blockHandlerClass = ExceptionUtil.class)
+    @SentinelRestTemplate(blockHandler = "handle", blockHandlerClass = BlockHandlerUtil.class)
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate;
-    }
-
-    public void handleException(){
-        System.out.println("handleException:  ttt");
     }
 }

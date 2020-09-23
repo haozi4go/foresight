@@ -1,0 +1,11 @@
+[
+  {
+    "resource": "sayHello",
+    "limitApp": "default",
+    "grade": 2,
+    "count": 0.1,
+    "timeWindow": 20,
+    "rtSlowRequestAmount": 3,
+    "minRequestAmount": 4
+  }
+]
