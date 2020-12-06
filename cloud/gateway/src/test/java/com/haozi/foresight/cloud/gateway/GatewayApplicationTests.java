@@ -1,10 +1,10 @@
-package com.haozi.foresight;
+package com.haozi.foresight.cloud.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ForesightApplicationTests {
+class GatewayApplicationTests {
 
     @Test
     void contextLoads() {
